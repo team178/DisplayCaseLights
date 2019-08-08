@@ -2,20 +2,15 @@
 #include <Wire.h>
 
 #define PIN 3
-int numOfPixels = 59; //update this based on the number of pixels we are using
-
-uint32_t YELLOW1;
-uint32_t BLUE1;
+int numOfPixels = 12; //update this based on the number of pixels we are using
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(numOfPixels, PIN, NEO_GRB + NEO_KHZ800);
-int frame = 0;
 
 void setup() {
-  YELLOW1 = strip.Color(255,208,0);
-  BLUE1 = strip.Color(15,8,56);
   strip.begin();
   strip.setBrightness(50);
   strip.show();
+  Serial.begin(9600);
   Serial.println("Starting...");
 
 }
@@ -25,22 +20,54 @@ void loop() {
     delay(5000);
     setStripBlue();
     delay(5000);
+    rainbow();
     turnOff();
-    delay(100000);
+    delay(5000);
 }
 
 void setStripYellow() {
+  Serial.println("Setting color to yellow...");
   for (int i = 0; i <= numOfPixels; i++) {
-    strip.setPixelColor(i, YELLOW1);
+    strip.setPixelColor(i, 255, 208, 0);
   }
   strip.show();
 }
 
 void setStripBlue() {
+  Serial.println("Setting color to blue...");
   for (int i = 0; i <= numOfPixels; i++) {
-    strip.setPixelColor(i, BLUE1);
+    strip.setPixelColor(i, 15, 8, 56);
   }
   strip.show();
+}
+
+void rainbow() {
+  Serial.println("Setting strip to rainbow...");
+  for (int i = 0; i < numOfPixels; i++) {
+    strip.setPixelColor(i, 255, 0, 0);
+  }
+  strip.show();
+  delay(1000);
+  for (int i = 0; i < numOfPixels; i++) {
+    strip.setPixelColor(i, 255, 165, 0);
+  }
+  strip.show();
+  delay(1000);
+  for (int i = 0; i < numOfPixels; i++) {
+    strip.setPixelColor(i, 255, 255, 0);
+  }
+  strip.show();
+  delay(1000);
+  for (int i = 0; i < numOfPixels; i++) {
+    strip.setPixelColor(i, 0, 255, 0);
+  }
+  strip.show();
+  delay(1000);
+  for (int i = 0; i < numOfPixels; i++) {
+    strip.setPixelColor(i, 0, 0, 255);
+  }
+  strip.show();
+  delay(1000);
 }
 
 void turnOff() {
@@ -48,5 +75,4 @@ void turnOff() {
     strip.setPixelColor(i, 0, 0, 0);
   }
   strip.show();
-}
 }
